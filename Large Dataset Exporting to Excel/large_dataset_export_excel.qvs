@@ -1,0 +1,33 @@
+﻿///$tab Main
+SET ThousandSep='.';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='#.##0,00 ₺;-#.##0,00 ₺';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD.MM.YYYY';
+SET TimestampFormat='DD.MM.YYYY hh:mm:ss[.fff]';
+SET MonthNames='Oca;Şub;Mar;Nis;May;Haz;Tem;Ağu;Eyl;Eki;Kas;Ara';
+SET DayNames='Pzt;Sal;Çar;Per;Cum;Cmt;Paz';
+
+
+LET record=1000000; //record number per excel file.
+
+main_table:
+LOAD RowNo() as id, 
+	 ceil(RowNo()/$(record)) as file_no 
+	 AutoGenerate (2000000); //number of rows to be created
+
+
+LET number_of_files=Ceil(NoOfRows('main_table')/$(record)); //number of files to be created 
+
+for i=1 to $(number_of_files) //iterating through a number of files
+
+NoConcatenate
+final_$(i):
+LOAD id,
+     file_no
+Resident main_table Where file_no=$(i);
+STORE final_$(i) into $(i)_excel_file.csv (delimiter is ';');
+DROP Table final_$(i);
+NEXT  i;
