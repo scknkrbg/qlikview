@@ -21,7 +21,7 @@ LOAD RowNo() as id,
 
 LET number_of_files=Ceil(NoOfRows('main_table')/$(record)); //number of files to be created 
 
-for i=1 to $(number_of_files) //iterating through a number of files
+for i=1 to $(number_of_files) //iterating through the number of files
 
 NoConcatenate
 final_$(i):
