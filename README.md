@@ -1,2 +1,2 @@
 # qlikview
-qlikview solutions to data compiling problems.
+Qlikview solutions to data compiling problems.
